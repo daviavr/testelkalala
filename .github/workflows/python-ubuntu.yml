@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: [ubuntu-latest, macos-latest]
+    runs-on: [ubuntu-latest]
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
@@ -14,7 +14,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.11
+          virtualenvs-in-project: true
       - name: Install pytest
-        run: pip install pytest
+        run: poetry install pytest
       - name: Test
         run: python -m pytest teste.py
